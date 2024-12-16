@@ -7,16 +7,20 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
       - name: Get Date
         id: get-date
         run: |
-          echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
+          echo "example=value" >> $GITHUB_OUTPUT
         shell: bash
+      - name: Use output
+        run: echo "The output is ${{ steps.example.outputs.example }}"
 
+      - name: Cleanup git config
+        run: git config --unset-all http.https://github.com/.extraheader || true
       - name: Cache Buildozer global directory
         uses: actions/cache@v4
         with:
