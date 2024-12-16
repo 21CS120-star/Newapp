@@ -1,4 +1,5 @@
-name: Build Android App with Buildozer
+name: Build APK
+
 on:
   push:
     branches:
@@ -9,52 +10,23 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      # Step 1: Checkout repository
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      # Step 2: Set up Python environment
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.8
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
 
-      # Step 3: Install dependencies
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-pip openjdk-11-jdk
-          pip install --upgrade pip setuptools cython buildozer
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y python3-dev libffi-dev build-essential git
+        pip install --upgrade pip setuptools wheel
+        pip install buildozer
 
-      # Step 4: Install Android SDK
-      - name: Install Android SDK
-        run: |
-          mkdir -p $HOME/android-sdk
-          wget -q https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O cmdline-tools.zip
-          unzip -q cmdline-tools.zip -d $HOME/android-sdk/cmdline-tools
-          mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/tools
-          rm cmdline-tools.zip
-          yes | $HOME/android-sdk/cmdline-tools/tools/bin/sdkmanager --licenses
-          $HOME/android-sdk/cmdline-tools/tools/bin/sdkmanager \
-            "platform-tools" \
-            "build-tools;33.0.0" \
-            "platforms;android-33"
+    - name: Initialize Buildozer
+      run: buildozer init
 
-      # Step 5: Set environment variables
-      - name: Set environment variables
-        run: |
-          echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
-          echo "PATH=$PATH:$HOME/android-sdk/platform-tools:$HOME/android-sdk/build-tools/33.0.0:$HOME/android-sdk/cmdline-tools/tools/bin" >> $GITHUB_ENV
-
-      # Step 6: Debug environment
-      - name: Debug Environment
-        run: |
-          sdkmanager --list
-          buildozer --version
-          echo $ANDROID_HOME
-
-      # Step 7: Run Buildozer
-      - name: Run Buildozer
-        run: |
-          buildozer android debug
-          
+    - name: Build APK
+      run: buildozer -v android debug and 
