@@ -10,24 +10,24 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      # Checkout repository
+      # Step 1: Checkout repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Set up Python
+      # Step 2: Set up Python environment
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.8
 
-      # Install dependencies
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-pip openjdk-11-jdk
-          pip install --upgrade pip setuptools buildozer cython
+          pip install --upgrade pip setuptools cython buildozer
 
-      # Set up Android SDK
+      # Step 4: Install Android SDK
       - name: Install Android SDK
         run: |
           mkdir -p $HOME/android-sdk
@@ -38,13 +38,22 @@ jobs:
           yes | $HOME/android-sdk/cmdline-tools/tools/bin/sdkmanager --licenses
           $HOME/android-sdk/cmdline-tools/tools/bin/sdkmanager "platform-tools" "build-tools;33.0.0" "platforms;android-33"
 
-      # Set up environment variables
+      # Step 5: Export environment variables
       - name: Set environment variables
         run: |
           echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
           echo "PATH=$PATH:$HOME/android-sdk/platform-tools:$HOME/android-sdk/build-tools/33.0.0:$HOME/android-sdk/cmdline-tools/tools/bin" >> $GITHUB_ENV
 
-      # Run Buildozer
+      # Step 6: Debug environment setup
+      - name: Debug Environment
+        run: |
+          sdkmanager --list
+          buildozer --version
+          python3 --version
+          echo $ANDROID_HOME
+
+      # Step 7: Run Buildozer
       - name: Run Buildozer
         run: |
           buildozer android debug
+          
