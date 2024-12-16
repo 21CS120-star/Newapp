@@ -1,5 +1,4 @@
 name: Build Android App with Buildozer
-
 on:
   push:
     branches:
