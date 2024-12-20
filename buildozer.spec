@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = RGB Hex Converter
+title = rgb_hex_converter
 
 # (str) Package name
 package.name = converter
@@ -12,20 +12,20 @@ package.domain = org.test
 # (str) Source code where the main.py lives
 source.dir = .
 
-# (list) Source files to include (leave empty to include all the files)
+# (list) Source files to include (let empty to include all the files)
 source.include_exts = py,png,jpg,kv,atlas,gif
 
 # (list) List of inclusions using pattern matching
 source.include_patterns = assets/*
 
-# (list) Source files to exclude (leave empty to not exclude anything)
+# (list) Source files to exclude (let empty to not exclude anything)
 source.exclude_dirs = tests, bin, venv
 
-# (str) Application versioning
+# (str) Application versioning (method 1)
 version = 0.1
 
 # (list) Application requirements
-requirements = python3,kivy
+requirements = python3,kivy,Cython
 
 # (str) Application icon
 icon.filename = assets/logo.png
@@ -57,7 +57,7 @@ android.ndk = 23b
 # (str) Android app theme, default is ok for Kivy-based app
 # android.apptheme = "@android:style/Theme.NoTitleBar"
 
-# (list) The Android architectures to build for
+# (list) The Android archs to build for
 android.archs = arm64-v8a, armeabi-v7a
 
 # (bool) Enables Android auto backup feature (Android API >=23)
@@ -72,8 +72,7 @@ log_level = 2
 warn_on_root = 1
 
 # (str) Path to build artifact storage, absolute or relative to spec file
- build_dir = ./.buildozer
+build_dir = ./.buildozer
 
 # (str) Path to build output (i.e. .apk, .aab, .ipa) storage
-bin_dir = ./bin
-
+ bin_dir = ./bin
