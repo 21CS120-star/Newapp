@@ -19,7 +19,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.12
+        python-version: '3.12'
 
     # Step 3: Install dependencies
     - name: Install dependencies
@@ -29,6 +29,7 @@ jobs:
         sudo apt install -y openjdk-11-jdk unzip
         pip install --upgrade pip setuptools wheel
         pip install buildozer
+        pip install Cython
 
     # Step 4: Install Android SDK/NDK
     - name: Install Android SDK and NDK
